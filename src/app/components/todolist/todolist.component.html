@@ -42,7 +42,7 @@
           <td>{{ task.description }}</td>
           <td>{{ task.dueDate }}</td>
           <td>
-            <button class="btn btn-info" (click)="onChangeStatus(i)">{{ task.status }}</button>
+            <input type="checkbox" [checked]="task.status === 'Completed'" (change)="onChangeStatus(task)">
           </td>
           <td>
             <button class="btn btn-danger" (click)="onDelete(i)">Delete</button>

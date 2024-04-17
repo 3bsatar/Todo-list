@@ -37,10 +37,11 @@ export class TodolistComponent {
     this.dataService.setList(this.taskArray);
   }
 
-  onChangeStatus(index: number) {
-    this.taskArray[index]["status"] = this.taskArray[index]["status"] === "Pending" ? "Completed" : "Pending";
+  onChangeStatus(task: any) {
+    task.status = task.status === 'Completed' ? 'Pending' : 'Completed';
     this.dataService.setList(this.taskArray);
   }
+  
 
   navetotask(i: number) {
     this.router.navigate(['/task', i]);
