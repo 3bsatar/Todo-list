@@ -6,49 +6,43 @@ import { DataService } from '../../../data.service';
 @Component({
   selector: 'app-todolist',
   templateUrl: './todolist.component.html',
-  styleUrl: './todolist.component.css'
+  styleUrls: ['./todolist.component.css']
 })
 export class TodolistComponent {
   taskArray = [
-    {"name": "Task 1", "description": "My First Task", "dueDate": "2024-04-10", "status": " Pending "},
-    {"name": "Task 2", "description": "My Second Task", "dueDate": "2024-04-10", "status": "Completed"}
-];
+    {"name": "Task 1", "description": "My First Task", "dueDate": "2024-04-15", "status": "Pending", "priority": "Low"},
+    {"name": "Task 2", "description": "My Second Task", "dueDate": "2024-04-15", "status": "Completed", "priority": "High"}
+  ];
 
-constructor(private dataService: DataService, private router: Router) {}
+  constructor(private dataService: DataService, private router: Router) {}
 
-ngOnInit(): void {
-  this.taskArray = this.dataService.getList();
-}
+  ngOnInit(): void {
+    this.taskArray = this.dataService.getList();
+  }
 
+  onAdd(form: NgForm) {
+    if (!form.valid) {
+      return; // Ensures all required fields are filled
+    }
 
-onAdd(form: NgForm){
-  form.form.value['status'] = " Pending ";
-    let dic = form.form.value;
+    let newTask = form.value; // form.value already contains the data input by the user
+    newTask['status'] = "Pending"; // Assigning a default status when creating a new task
 
-    if(dic['name']=="" || dic['description']=="" || dic['dueDate']=="")
-        return;
+    this.taskArray.push(newTask); // Push the new task to the task array
+    this.dataService.setList(this.taskArray); // Update the data service
+  }
 
-    this.taskArray.push({
-      "name": dic['name'],
-      "description": dic["description"],
-      "dueDate": dic["dueDate"],
-      "status": dic["status"]
-    });
-    this.dataService.setList(this.taskArray);
-}
-
-
-onDelete(index: number){
+  onDelete(index: number) {
     this.taskArray.splice(index, 1);
-}
+    this.dataService.setList(this.taskArray);
+  }
 
-onChangeStatus(index: number){
-    if(this.taskArray[index]["status"] == " Pending ")
-        this.taskArray[index]["status"] = "Completed";
-    else this.taskArray[index]["status"] = " Pending ";
-}
-navetotask(i: number){
-  this.router.navigate(['/task', i]);
-}
+  onChangeStatus(index: number) {
+    this.taskArray[index]["status"] = this.taskArray[index]["status"] === "Pending" ? "Completed" : "Pending";
+    this.dataService.setList(this.taskArray);
+  }
 
+  navetotask(i: number) {
+    this.router.navigate(['/task', i]);
+  }
 }
