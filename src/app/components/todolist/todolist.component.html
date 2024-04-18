@@ -2,56 +2,60 @@
   <h2 class="text-center">TO DO LIST</h2>
 
   <form (ngSubmit)="onAdd(taskform)" #taskform="ngForm" id="taskForm">
-    <div class="form-group">
-      <input type="text" class="form-control" id="name" ngModel name="name" placeholder="Title" required>
-    </div>
-    <div class="form-group">
-      <input type="date" class="form-control" id="dueDate" ngModel name="dueDate" placeholder="Due Date" required>
-    </div>
-    <div class="form-group">
-      <textarea class="form-control" id="description" ngModel name="description" rows="2" placeholder="Description"></textarea>
-    </div>
-    <div class="form-group">
-      <label for="priority">Priority</label>
-      <select class="form-control" id="priority" ngModel name="priority" required>
-        <option value="Low">Low</option>
-        <option value="Medium">Medium</option>
-        <option value="High">High</option>
-      </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Add Task</button>
+      <div class="form-group">
+          <label for="name" class="form-label">Title:</label>
+          <input type="text" class="form-control" id="name" ngModel name="name" placeholder="Enter title" required>
+      </div>
+      <div class="form-group">
+          <label for="dueDate" class="form-label">Due Date:</label>
+          <input type="date" class="form-control" id="dueDate" ngModel name="dueDate" required>
+      </div>
+      <div class="form-group">
+          <label for="description" class="form-label">Description:</label>
+          <textarea class="form-control" id="description" ngModel name="description" rows="3" placeholder="Add a description"></textarea>
+      </div>
+      <div class="form-group">
+          <label for="priority" class="form-label">Priority:</label>
+          <select class="form-control" id="priority" ngModel name="priority" required>
+              <option value="" disabled selected>Select priority</option>
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+          </select>
+      </div>    
+      <button type="submit" class="btn btn-primary">Add Task</button>
   </form>
 
-  <div style="margin-top: 30px;">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Description</th>
-          <th>Due Date</th>
-          <th>Status</th>
-          <th>Actions</th>
-          <th>Priority</th>
-        </tr>
-      </thead>
-      <tbody id="taskList">
-        <tr *ngFor="let task of taskArray; index as i">
-          <td>
-            <a [routerLink]="['/task', i]">{{ task.name }}</a>
-          </td>
-          <td>{{ task.description }}</td>
-          <td>{{ task.dueDate }}</td>
-          <td>
-            <input type="checkbox" [checked]="task.status === 'Completed'" (change)="onChangeStatus(task)">
-          </td>
-          <td>
-            <button class="btn btn-danger" (click)="onDelete(i)">Delete</button>
-          </td>
-          <td [ngClass]="{'priority-low': task.priority === 'Low', 'priority-medium': task.priority === 'Medium', 'priority-high': task.priority === 'High'}">
-            {{ task.priority }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="task-list mt-4">
+      <table class="table table-hover">
+          <thead class="thead-dark">
+              <tr>
+                  <th>Title</th>
+                  <th>Description</th>
+                  <th>Due Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                  <th>Priority</th>
+              </tr>
+          </thead>
+          <tbody id="taskList">
+              <tr *ngFor="let task of taskArray; index as i">
+                  <td>
+                      <a [routerLink]="['/task', i]">{{ task.name }}</a>
+                  </td>
+                  <td>{{ task.description }}</td>
+                  <td>{{ task.dueDate | date:'mediumDate' }}</td>
+                  <td>
+                      <input type="checkbox" [checked]="task.status === 'Completed'" (change)="onChangeStatus(task)">
+                  </td>
+                  <td>
+                      <button class="btn btn-danger" (click)="onDelete(i)">Delete</button>
+                  </td>
+                  <td [ngClass]="{'priority-low': task.priority === 'Low', 'priority-medium': task.priority === 'Medium', 'priority-high': task.priority === 'High'}">
+                      {{ task.priority }}
+                  </td>
+              </tr>
+          </tbody>
+      </table>
   </div>
 </div>
